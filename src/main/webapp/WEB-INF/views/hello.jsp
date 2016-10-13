@@ -10,5 +10,8 @@
             <c:out value = "${prod.description}"/>
             <i><c:out value = "${prod.price}"/></i><br><br>
         </c:forEach>
+        <br>
+            <a href="<c:url value="priceincrease.html"/>">Increase Prices</a>
+         <br>
     </body>
 </html>
