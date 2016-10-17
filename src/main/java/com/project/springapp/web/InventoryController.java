@@ -27,14 +27,14 @@ public class InventoryController {
     private ProductManager productManager;
 
     @RequestMapping(value="/hello.html")
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
+    public String handleRequest(HttpServletRequest request, HttpServletResponse response)
      throws ServerException,IOException{
         String now = (new Date()).toString();
         logger.info("Returning hello view with " + now);
         Map<String,Object> myModel = new HashMap<String, Object>();
         myModel.put("now",now);
         myModel.put("products",this.productManager.getProducts());
-        return new ModelAndView("hello", "model", myModel);
+        return "hello";
     }
 
     public Date getNow() {

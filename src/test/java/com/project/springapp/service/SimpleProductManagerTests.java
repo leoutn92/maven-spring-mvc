@@ -1,6 +1,8 @@
 package com.project.springapp.service;
 
 import com.project.springapp.domain.Product;
+import com.project.springapp.repository.InMemoryProductDao;
+import com.project.springapp.repository.ProductDao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,11 +38,14 @@ public class SimpleProductManagerTests {
         product.setPrice(TABLE_PRICE);
         products.add(product);
 
-        productManager.setProducts(products);
+        ProductDao productDao = new InMemoryProductDao(products);
+        productManager.setProductDao(productDao);
+        //productManager.setProducts(products);
     }
     @Test
     public void testGetProductsWithNoProducts() {
         productManager = new SimpleProductManager();
+        productManager.setProductDao(new InMemoryProductDao(null));
         assertNull(productManager.getProducts());
     }
     @Test
@@ -58,6 +63,7 @@ public class SimpleProductManagerTests {
     public void testIncreasePriceWithNullListOfProducts() {
         try {
             productManager = new SimpleProductManager();
+            productManager.setProductDao(new InMemoryProductDao(null));
             productManager.increasePrice(POSITIVE_PRICE_INCREASE);
         } catch (NullPointerException ex) {
           fail("Products list in null");
@@ -67,7 +73,8 @@ public class SimpleProductManagerTests {
     public void testIncreasePriceWithEmptyListOfProducts() {
         try {
             productManager = new SimpleProductManager();
-            productManager.setProducts(new ArrayList<Product>());
+            productManager.setProductDao(new InMemoryProductDao(new ArrayList<Product>()));
+            //productManager.setProducts(new ArrayList<Product>());
             productManager.increasePrice(POSITIVE_PRICE_INCREASE);
         } catch (Exception ex) {
             fail("Products list is empty");
@@ -86,5 +93,4 @@ public class SimpleProductManagerTests {
        product = products.get(1);
        assertEquals(expectedTablePriceWithIncrease,product.getPrice(),0);
     }
-
 }
